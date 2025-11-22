@@ -1,5 +1,5 @@
 import net from "net";
-import incomingRequest from "./incomingRequest.js";
+import incomingRequest from "./incomingRequest.ts";
 export class Server {
   constructor(reqListener) {
     //create the TCP server
