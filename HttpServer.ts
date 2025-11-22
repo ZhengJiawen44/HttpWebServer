@@ -1,7 +1,8 @@
 import net from "net";
 import incomingRequest from "./incomingRequest.ts";
 export class Server {
-  constructor(reqListener) {
+  server: net.Server;
+  constructor(reqListener: Function) {
     //create the TCP server
     this.server = net.createServer((socket) => {
       socket.on("close", () => { console.log("server closed") });
@@ -21,13 +22,13 @@ export class Server {
     });
   }
 
-  listen(port = 4221, host = "localhost", serverOnStart) {
+  listen(port = 4221, host = "localhost", serverOnStart?: () => void) {
     //start listening to TCP connections
     this.server.listen(port, host, serverOnStart)
   }
 }
 
-export function createServer(cb) {
+export function createServer(cb: Function) {
   return new Server(cb);
 }
 
