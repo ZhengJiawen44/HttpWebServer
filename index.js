@@ -1,4 +1,4 @@
-import { createServer } from "./HttpServer.js";
+import { createServer } from "./HttpServer.ts";
 import Response from "./response.ts";
 
 const server = createServer(
