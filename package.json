@@ -1,0 +1,21 @@
+{
+  "name": "httpwebserver",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "an http web server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZhengJiawen44/HttpWebServer.git"
+  },
+  "author": "Zheng Jiawen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ZhengJiawen44/HttpWebServer/issues"
+  },
+  "homepage": "https://github.com/ZhengJiawen44/HttpWebServer#readme"
+}
