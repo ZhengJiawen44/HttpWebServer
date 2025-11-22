@@ -1,4 +1,4 @@
-import Request from "./request.js";
+import Request from "./request.ts";
 import parseHeaders from "./parseHeaders.ts"
 /*
 * function to parse a TCP buffer into http message

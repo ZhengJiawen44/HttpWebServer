@@ -3,6 +3,10 @@
  */
 
 export default class Request {
+  url: string;
+  headers: Map<string, string>;
+  method: string;
+  body: string;
   constructor(url, headers, method, body) {
     this.url = url;
     this.headers = headers;
@@ -10,14 +14,5 @@ export default class Request {
     this.body = body;
   }
 
-  serialize() {
-    let startLine = `HTTP/1.1 ${this.status}\r\n`;
-    let headers = "";
-    for (let [key, val] of this.headers) {
-      headers += `${key}: ${val}\r\n`
-    }
-    const serializedResponse = startLine + headers + "\r\n" + this.body;
-    return serializedResponse;
-  }
 }
 
