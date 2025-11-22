@@ -16,6 +16,24 @@ npm install
 npm run start # to run the minimal example
 ```
 ## Documentation
+### Table of Contents
+- [Features](#features)
+- [Installation](#installation)
+- [Documentation](#documentation)
+  - [1. Class: Server](#1-class-server)
+    - [Server(requestListener)](#serverrequestlistener)
+    - [Server.bind(port, host, onServerStart)](#serverbindport-host-onserverstart)
+  - [2. Function: createServer](#2-function-createserver)
+  - [3. Function: incomingRequest](#3-function-incomingrequest)
+  - [4. Function: parseHeaders](#4-function-parseheaders)
+  - [5. Class: Request](#5-class-request)
+    - [Request(url, headers, method, body)](#requesturl-headers-method-body)
+  - [6. Class: Response](#6-class-response)
+    - [Response(body, config)](#responsebody-config)
+    - [Response.serialize](#responseserialize)
+- [Appendix](#appendix)
+  - [Type: httpRequest](#type-httprequest)
+  - [Type: httpResponse](#type-httpresponse)
 
 ### 1. Class: Server
 The ```Server``` object is responsible for binding the TCP server to a port and manages your server request/response callbacks.
@@ -150,7 +168,6 @@ export type httpResponse = {
   header: Record<string, string>;
 }
 ```
-
 
 
 
