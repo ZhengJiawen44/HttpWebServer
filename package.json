@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/ZhengJiawen44/HttpWebServer/issues"
   },
-  "homepage": "https://github.com/ZhengJiawen44/HttpWebServer#readme"
+  "homepage": "https://github.com/ZhengJiawen44/HttpWebServer#readme",
+  "devDependencies": {
+    "@types/node": "^24.10.1"
+  }
 }

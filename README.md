@@ -22,7 +22,7 @@ npm run start # to run the minimal example
 - [Documentation](#documentation)
   - [1. Class: Server](#1-class-server)
     - [Server(requestListener)](#serverrequestlistener)
-    - [Server.bind(port, host, onServerStart)](#serverbindport-host-onserverstart)
+    - [Server.listen(port, host, onServerStart)](#serverbindport-host-onserverstart)
   - [2. Function: createServer](#2-function-createserver)
   - [3. Function: incomingRequest](#3-function-incomingrequest)
   - [4. Function: parseHeaders](#4-function-parseheaders)
@@ -48,7 +48,7 @@ The ```Server``` object is responsible for binding the TCP server to a port and 
 		return new Response(JSON.stringify(body), {status:200, headers:{"Content-Length":"11"}})
 	})
 	```
-#### Server.bind(port, host, onServerStart)
+#### Server.listen(port, host, onServerStart)
 - ```port``` ```number?``` a port number ranging from  0–65535 to bind your server to. defaults to 4221.
 - ```host``` ```string?``` defaults to localhost but can be any network interface.
 - ```onServerStart``` ```()=>void``` callback function that executes when a new TCP connection is made.
@@ -57,7 +57,7 @@ The ```Server``` object is responsible for binding the TCP server to a port and 
 const port = process.env.port;
 const host = process.env.host;
 
-server.bind(port, host, ()=>{
+server.listen(port, host, ()=>{
 	console.log(`server started on http://${host}:${port}`);
 })
 ```
