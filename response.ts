@@ -3,11 +3,14 @@
  */
 
 export default class Response {
-  constructor(body = "", config) {
+  body: string;
+  status: number;
+  headers: Map<string, string>
+  constructor(body = "", config: { status: number, headers: Record<string, string> }) {
     this.body = body;
-    this.status = config.status;
+    this.status = config.status || 200;
     this.headers = new Map(Object.entries(config.headers || {}));
-    this.headers.set("Content-Length", body.length);
+    this.headers.set("Content-Length", String(body.length));
   }
 
   serialize() {
