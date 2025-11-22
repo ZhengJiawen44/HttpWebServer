@@ -1,5 +1,5 @@
 import Request from "./request.js";
-import Headers from "./headers.js"
+import parseHeaders from "./parseHeaders.ts"
 /*
 * function to parse a TCP buffer into http message
 */
@@ -16,7 +16,7 @@ export default function incomingRequest(buffer) {
   const [front, body] = message.split("\r\n\r\n");
   const splitFront = front.split("\r\n");
   const startline = splitFront.shift().split(" ");
-  headers = new Headers(splitFront);
+  headers = parseHeaders(splitFront);
   method = startline[0];
   url = startline[1];
   //TODO parse body according to header content type
