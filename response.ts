@@ -11,6 +11,11 @@ export default class Response {
     this.status = config.status || 200;
     this.headers = new Map(Object.entries(config.headers || {}));
     this.headers.set("Content-Length", String(body.length));
+    this.headers.set("date", new Date().toUTCString());
+    this.headers.set("Access-Control-Allow-Origin", "*");
+    this.headers.set("Connection", "Keep-Alive");
+    this.headers.set("Access-Control-Allow-Origin", "*");
+
   }
 
   serialize() {
