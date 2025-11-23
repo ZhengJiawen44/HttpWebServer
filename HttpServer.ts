@@ -1,7 +1,7 @@
 import net from "net";
 import incomingRequest from "./incomingRequest.ts";
 import debounce from "./debounce.ts";
-export class Server {
+export default class Server {
   server: net.Server;
   timeout: number;
   requestQuota: number;
@@ -42,9 +42,4 @@ export class Server {
     this.server.listen(port, host, serverOnStart)
   }
 }
-
-export function createServer(cb: Function) {
-  return new Server(cb);
-}
-
 

@@ -1,4 +1,4 @@
-import { Server } from "./HttpServer.ts";
+import Server from "./HttpServer.ts";
 import Response from "./response.ts";
 import type { httpRequest } from "./types.ts"
 
