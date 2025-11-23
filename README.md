@@ -21,9 +21,9 @@ npm run start # to run the minimal example
 - [Installation](#installation)
 - [Documentation](#documentation)
   - [1. Class: Server](#1-class-server)
-    - [Server(requestListener)](#serverrequestlistener)
+    - [Server(requestListener, options)](#serverrequestlistener)
     - [Server.listen(port, host, onServerStart)](#serverbindport-host-onserverstart)
-  - [2. Function: createServer](#2-function-createserver)
+  - [2. Function: createServer](#2-function-createserver) (deprecated)
   - [3. Function: incomingRequest](#3-function-incomingrequest)
   - [4. Function: parseHeaders](#4-function-parseheaders)
   - [5. Class: Request](#5-class-request)
@@ -38,15 +38,20 @@ npm run start # to run the minimal example
 ### 1. Class: Server
 The ```Server``` object is responsible for binding the TCP server to a port and manages your server request/response callbacks.
 
-#### Server(requestListener)
+#### Server(requestListener, options)
+- ```options``` ```{maxQuota?:number, timeout?:number}``` pass this to configure the max idle time since last request and max request client makes before closing the TCP connection. 
 - ```requestListener``` ```(req)=>serverResponse``` constructor for the Server Object that manages incoming server requests and responses.
 	```js
-	import {Server} from "./HttpServer.ts";
+	import Server from "./HttpServer.ts";
 	import Response from "./response.ts";
 	
-	const server = new Server((req)=>{
-		return new Response(JSON.stringify(body), {status:200, headers:{"Content-Length":"11"}})
-	})
+    const options = {timeout:5000, maxQuota:999};
+	const server = new Server(
+        (req)=>{
+		    return new Response(JSON.stringify(body), {status:200, headers: "Content-Length":"11"}})
+        },
+        options
+    )
 	```
 #### Server.listen(port, host, onServerStart)
 - ```port``` ```number?``` a port number ranging from  0–65535 to bind your server to. defaults to 4221.
@@ -62,8 +67,8 @@ server.listen(port, host, ()=>{
 })
 ```
 
-### 2. Function: createServer
-convenience method for creating and configuring a http server
+### 2. Function: createServer (Deprecated)
+this function is deprecated in favour of creating servers using ```new Server()``` instead
 #### createServer(cb):
 - ```cb``` ```(req)=>serverResponse``` same as the callabck in  [Server class](#1-class-server) above. constructor for the Server Object that manages incoming server requests and responses.
 - returns ```server``` object. 
@@ -168,6 +173,7 @@ export type httpResponse = {
   header: Record<string, string>;
 }
 ```
+
 
 
 
