@@ -18,12 +18,12 @@ export default class Server {
       socket.on("close", () => { console.log("TCP conn closed, change timeout or requestQuota to configure it") });
 
       //parse incoming bytes to an http request message
-      socket.on("data", (data) => {
+      socket.on("data", async (data) => {
         requestQuota--;
 
         let req = incomingRequest(data);
         //obtain server response by executing http server callbacks
-        const res = reqListener(req);
+        const res = await reqListener(req);
         res.headers.set("Keep-Alive", `timeout=${this.timeout}, max=${requestQuota}`)
         //send server response over TCP socket
         socket.write(res.serialize());
