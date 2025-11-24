@@ -8,7 +8,7 @@ const server = new HttpServer(
 
     if (req.url == "/") {
       try {
-        const body = await fs.readFile("./public//index.html", { encoding: "utf8" });
+        const body = await fs.readFile("./public/index.html", { encoding: "utf8" });
         return new Response(body, { status: 200, headers: { "Content-Type": "text/html" } });
       } catch (error) {
         return new Response(error.message, { status: 500, headers: { "Content-Type": "text/html" } });
