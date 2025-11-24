@@ -7,7 +7,7 @@ export default class Request {
   headers: Map<string, string>;
   method: string;
   body: string;
-  constructor(url, headers, method, body) {
+  constructor(url: string, headers: Map<string, string>, method: string, body: string) {
     this.url = url;
     this.headers = headers;
     this.method = method;

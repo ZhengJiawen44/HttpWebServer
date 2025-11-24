@@ -1,9 +1,9 @@
-import Server from "./HttpServer.ts";
+import HttpServer from "./HttpServer.ts";
 import Response from "./response.ts";
 import type { httpRequest } from "./types.ts"
 import fs from "fs/promises"
 
-const server = new Server(
+const server = new HttpServer(
   async (req: httpRequest) => {
 
     if (req.url == "/") {
@@ -21,6 +21,10 @@ const server = new Server(
       } catch (error) {
         return new Response(error.message, { status: 500, headers: { "Content-Type": "text/html" } })
       }
+    }
+    else if (req.url.startsWith("/files") && req.method == "POST") {
+      console.log(req.body);
+      return new Response("data recieved", { status: 404 });
     }
     else {
       return new Response("page not found", { status: 404 });

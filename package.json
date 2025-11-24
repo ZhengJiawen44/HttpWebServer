@@ -5,7 +5,7 @@
   "description": "an http web server",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node index.ts"
   },
   "repository": {
@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/ZhengJiawen44/HttpWebServer#readme",
   "devDependencies": {
-    "@types/node": "^24.10.1"
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.1",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.5"
   }
 }

@@ -1,15 +1,15 @@
 import net from "net";
 import incomingRequest from "./incomingRequest.ts";
 import debounce from "./debounce.ts";
-export default class Server {
-  server: net.Server;
+export default class HttpServer {
+  TCPServer: net.Server;
   timeout: number;
   requestQuota: number;
   constructor(reqListener: Function, options?: { timeout?: number, requestQuota?: number }) {
     this.timeout = options?.timeout || 5000;
     this.requestQuota = options?.requestQuota || 5;
     //create the TCP server
-    this.server = net.createServer((socket) => {
+    this.TCPServer = net.createServer((socket) => {
       console.log("new TCP conn established");
 
       let requestQuota = this.requestQuota;
@@ -39,7 +39,10 @@ export default class Server {
 
   listen(port = 4221, host = "localhost", serverOnStart?: () => void) {
     //start listening to TCP connections
-    this.server.listen(port, host, serverOnStart)
+    this.TCPServer.listen(port, host, serverOnStart)
+  }
+  close() {
+    this.TCPServer.close();
   }
 }
 
