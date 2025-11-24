@@ -1,4 +1,3 @@
-
 # HttpWebServer
 
 A naive implementation of an http web server written on top of node's ```net``` module.
@@ -40,14 +39,14 @@ The ```Server``` object is responsible for binding the TCP server to a port and 
 
 #### Server(requestListener, options)
 - ```options``` ```{maxQuota?:number, timeout?:number}``` pass this to configure the max idle time since last request and max request client makes before closing the TCP connection. 
-- ```requestListener``` ```(req)=>serverResponse``` constructor for the Server Object that manages incoming server requests and responses.
+- ```requestListener``` ```async(req)=>serverResponse``` constructor for the Server Object that manages incoming server requests and responses.
 	```js
 	import Server from "./HttpServer.ts";
 	import Response from "./response.ts";
 	
     const options = {timeout:5000, maxQuota:999};
 	const server = new Server(
-        (req)=>{
+        async(req)=>{
 		    return new Response(JSON.stringify(body), {status:200, headers: "Content-Length":"11"}})
         },
         options
@@ -126,7 +125,7 @@ The `Response` class is responsible for constructing an HTTP response and serial
 -   `config` **object**:    
     -   `status` **number**: HTTP status code (default `200`)        
     -   `headers` **Record<string, string>**: additional headers        
--   Automatically sets `Content-Length` header based on `body.length`
+-   Automatically sets `Content-Length` header based on `Buffer.byteLength`
 ```js
 import Response from "./response.ts";
 
@@ -149,7 +148,7 @@ Hello World                        --body
 Serializes the `Response` object into a **valid HTTP message string** with start-line, headers, and body. Used to send the response over a TCP socket.
 
 #### serialize()
--   Returns `string`: the raw HTTP response ready to send, including `HTTP/1.1 <status>`, headers, and body.
+-   Returns `string | buffer`: the raw HTTP response ready to send, including `HTTP/1.1 <status>`, headers, and body.
 
 ## Appendix
 
@@ -173,6 +172,7 @@ export type httpResponse = {
   header: Record<string, string>;
 }
 ```
+
 
 
 
