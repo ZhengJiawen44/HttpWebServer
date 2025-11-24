@@ -4,7 +4,9 @@
 export default function parseHeaders(headerList: string[]): Map<string, string> {
   let headerStore = new Map();
   headerList.forEach((header) => {
-    const [key, value] = header.split(":");
+    let separator = header.indexOf(":");
+    const key = header.slice(0, separator);
+    const value = header.slice(separator + 1);
     headerStore.set(key, value);
   });
   return headerStore;
