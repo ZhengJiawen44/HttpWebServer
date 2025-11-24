@@ -1,6 +1,6 @@
 import net from "net";
 import incomingRequest from "./incomingRequest.ts";
-import debounce from "./debounce.ts";
+import debounce from "../utils/debounce.ts";
 export default class HttpServer {
   TCPServer: net.Server;
   timeout: number;

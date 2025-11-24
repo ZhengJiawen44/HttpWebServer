@@ -1,4 +1,4 @@
-import Server from "../HttpServer";
+import Server from "../src/core/HttpServer.ts";
 import * as net from "net";
 
 test("server is listening on designated port", (done) => {
