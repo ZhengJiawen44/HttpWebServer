@@ -4,10 +4,10 @@
 
 export default class Request {
   url: string;
-  headers: Map<string, string>;
+  headers: Map<string, string | string[]>;
   method: string;
   body: string;
-  constructor(url: string, headers: Map<string, string>, method: string, body: string) {
+  constructor(url: string, headers: Map<string, string | string[]>, method: string, body: string) {
     this.url = url;
     this.headers = headers;
     this.method = method;

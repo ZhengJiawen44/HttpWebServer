@@ -6,7 +6,7 @@ export default class Response {
   body?: string | Buffer;
   status?: number;
   headers?: Map<string, string>
-  constructor(body?, config?: { status?: number, headers?: Record<string, string> }) {
+  constructor(body?: Buffer | string, config?: { status?: number, headers?: Record<string, string> }) {
     this.body = body;
     this.status = config?.status || 200;
     this.headers = new Map(Object.entries(config?.headers || {}));
@@ -19,19 +19,17 @@ export default class Response {
   }
 
   serialize() {
-    let startLine = `HTTP/1.1 ${this.status}\r\n`;
+    const startLine = `HTTP/1.1 ${this.status}\r\n`;
     let headers = "";
     for (let [key, val] of this.headers!) {
       headers += `${key}: ${val}\r\n`
     }
-    if (Buffer.isBuffer(this.body)) {
-      return Buffer.concat([
-        Buffer.from(startLine + headers + "\r\n"),
-        this.body
-      ]);
-    } else {
-      return startLine + headers + "\r\n" + this.body;
-    }
+    const body = Buffer.isBuffer(this.body) ? this.body : Buffer.from(this.body);
+    return Buffer.concat([
+      Buffer.from(startLine + headers + "\r\n"),
+      body
+    ]);
+
   }
 }
 

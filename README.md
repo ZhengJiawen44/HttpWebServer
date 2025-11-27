@@ -25,9 +25,10 @@ npm run start # to run the minimal example
   - [2. Function: createServer](#2-function-createserver) (deprecated)
   - [3. Function: incomingRequest](#3-function-incomingrequest)
   - [4. Function: parseHeaders](#4-function-parseheaders)
-  - [5. Class: Request](#5-class-request)
+  - [5. Function: compressResponse](#5-function-compressresponse)
+  - [6. Class: Request](#6-class-request)
     - [Request(url, headers, method, body)](#requesturl-headers-method-body)
-  - [6. Class: Response](#6-class-response)
+  - [7. Class: Response](#7-class-response)
     - [Response(body, config)](#responsebody-config)
     - [Response.serialize](#responseserialize)
 - [Appendix](#appendix)
@@ -99,24 +100,44 @@ import incomingRequest from "./incomingRequest.ts"
 utility function to construct a header object from an array of string key value pairs. Used by ```incomingRequest``` to parse headers.
 #### parseHeaders(headerList)
 - headerList ```string[]``` an array of strings containing header key and value pairs.
-- returns ```headerStore``` a map containing all headers stored in key value pairs. 
+- returns ```headerStore``` a map containing all headers stored in key value pairs. The ```Accept-Encoding``` header is automatically parsed into an array of encoding types.
 ```js
 	import parseHeader from "./parseHeader.ts";
 	const headers = parseHeader(["Content-Type:text/html", "Content-Length:11"]);
 	headers.get("content-length"); //returns "text/html"
+	headers.get("Accept-Encoding"); //returns string[] of encoding types
 ```
-### 5. Class: Request
+
+### 5. Function: compressResponse
+utility function to compress response bodies using various compression algorithms based on client-supported encodings.
+#### compressResponse(response, compressionEncodings)
+- ```response``` ```string | Buffer``` the response body to compress
+- ```compressionEncodings``` ```string[]``` array of compression encodings supported by the client (e.g., `["gzip", "deflate", "br"]`)
+- returns ```Promise<[Buffer, string]>``` a tuple containing the compressed buffer and the chosen encoding type
+```js
+import compressResponse from "./utils/compressResponse.ts";
+
+const encodings = req.headers.get("Accept-Encoding") as string[];
+const [compressedResponse, chosenEncoding] = await compressResponse(res.body, encodings);
+if (chosenEncoding != null) {
+  res.body = compressedResponse;
+  res.headers.set("Content-Encoding", chosenEncoding);
+}
+```
+Supported compression algorithms: `gzip`, `deflate`, `br` (Brotli), and `zstd`.
+
+### 6. Class: Request
 
 The `Request` class represents an HTTP request received by the server. It encapsulates the URL, headers, HTTP method, and body.
 
 #### Request(url, headers, method, body)
 
 -   `url` **string**: the requested URL (e.g., `/`, `/api/data`)
--   `headers` **Map<string, string>**: headers parsed from the TCP buffer    
+-   `headers` **Map<string, string | string[]>**: headers parsed from the TCP buffer    
 -   `method` **string**: HTTP method (`GET`, `POST`, etc.)    
 -   `body` **string**: optional request body content
 
-### 6. Class: Response
+### 7. Class: Response
 The `Response` class is responsible for constructing an HTTP response and serializing it according to the HTTP specification.
 
 #### Response(body, config)
@@ -157,7 +178,7 @@ A TypeScript type describing the shape of a request object:
 ```js
 export type httpRequest = {
   url: string;
-  headers: Map<string, string>;
+  headers: Map<string, string | string[]>;
   method: "GET" | "POST" | "PATCH" | "DELETE" | "OPTIONS";
   body: string;
 }
@@ -172,9 +193,3 @@ export type httpResponse = {
   header: Record<string, string>;
 }
 ```
-
-
-
-
-
-

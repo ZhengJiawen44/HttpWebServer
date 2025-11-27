@@ -6,7 +6,7 @@ import parseHeaders from "./parseHeaders.ts"
 export default function incomingRequest(buffer: Buffer) {
 
   //attributes we shall be parsing from the buffer
-  let headers: null | Map<string, string> = null;
+  let headers: null | Map<string, string | string[]> = null;
   let url: null | string = null;
   let method = "GET";
 

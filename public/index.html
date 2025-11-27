@@ -3,11 +3,175 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Simple Page</title>
+  <title>HttpWebServer Documentation</title>
+
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    pre {
+      background: #222;
+      color: #eee;
+      padding: 12px;
+      overflow-x: auto;
+      border-radius: 6px;
+    }
+    code {
+      background: #f0f0f0;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    h1, h2, h3, h4 {
+      margin-top: 32px;
+    }
+    nav {
+      background: #f7f7f7;
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+    nav ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    nav li {
+      padding: 3px 0;
+    }
+    nav a {
+      text-decoration: none;
+      color: #0070cc;
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello, World!</h1>
-  <p>This is a simple HTML skeleton.</p>
+
+  <h1>HttpWebServer</h1>
+  <p>A naive implementation of an HTTP web server using Node’s <code>net</code> module.</p>
+
+  <h2>Features</h2>
+  <ul>
+    <li>HTTP/HTTPS support</li>
+    <li>Easy configuration</li>
+    <li>Fast and minimal</li>
+  </ul>
+
+  <h2>Installation</h2>
+  <pre><code>git clone https://github.com/ZhengJiawen44/HttpWebServer.git
+cd HttpWebServer
+npm install
+npm run start # to run the minimal example
+</code></pre>
+
+  <h2>Documentation</h2>
+
+  <nav>
+    <strong>Table of Contents</strong>
+    <ul>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#installation">Installation</a></li>
+      <li><a href="#documentation">Documentation</a></li>
+      <ul>
+        <li><a href="#server-class">1. Class: Server</a></li>
+        <li><a href="#createServer">2. Function: createServer (deprecated)</a></li>
+        <li><a href="#incomingRequest">3. Function: incomingRequest</a></li>
+        <li><a href="#parseHeaders">4. Function: parseHeaders</a></li>
+        <li><a href="#request-class">5. Class: Request</a></li>
+        <li><a href="#response-class">6. Class: Response</a></li>
+        <li><a href="#appendix">Appendix</a></li>
+      </ul>
+    </ul>
+  </nav>
+
+  <h3 id="server-class">1. Class: Server</h3>
+  <p>Responsible for binding TCP and handling request/response lifecycle.</p>
+
+  <h4>Server(requestListener, options)</h4>
+  <p><code>options</code> <code>{maxQuota?: number, timeout?: number}</code></p>
+  <pre><code>import Server from "./HttpServer.ts";
+import Response from "./response.ts";
+
+const options = { timeout: 5000, maxQuota: 999 };
+const server = new Server(
+  async (req) => {
+    return new Response(JSON.stringify(body), {
+      status: 200,
+      headers: { "Content-Length": "11" }
+    });
+  },
+  options
+);
+</code></pre>
+
+  <h4>Server.listen(port, host, onServerStart)</h4>
+  <pre><code>const port = process.env.port;
+const host = process.env.host;
+
+server.listen(port, host, () => {
+  console.log(`server started on http://${host}:${port}`);
+});
+</code></pre>
+
+  <h3 id="createServer">2. Function: createServer (Deprecated)</h3>
+  <pre><code>import { createServer } from "./HttpServer.ts";
+import Response from "./response.ts";
+
+const server = createServer((req) => {
+  return new Response("hello world", {
+    status: 200,
+    headers: { "Content-Type": "text/html" }
+  });
+});
+</code></pre>
+
+  <h3 id="incomingRequest">3. Function: incomingRequest</h3>
+  <pre><code>import incomingRequest from "./incomingRequest.ts";
+
+const req = incomingRequest(data);
+</code></pre>
+
+  <h3 id="parseHeaders">4. Function: parseHeaders</h3>
+  <pre><code>import parseHeader from "./parseHeader.ts";
+const headers = parseHeader(["Content-Type:text/html", "Content-Length:11"]);
+headers.get("content-length"); // returns "text/html"
+</code></pre>
+
+  <h3 id="request-class">5. Class: Request</h3>
+  <p>Represents a parsed HTTP request.</p>
+
+  <h3 id="response-class">6. Class: Response</h3>
+  <pre><code>import Response from "./response.ts";
+
+const res = new Response("Hello World", {
+  status: 200,
+  headers: { "Content-Type": "text/plain" }
+});
+
+console.log(res.serialize());
+</code></pre>
+
+  <h2 id="appendix">Appendix</h2>
+
+  <h3>Type: httpRequest</h3>
+  <pre><code>export type httpRequest = {
+  url: string;
+  headers: Map&lt;string, string&gt;;
+  method: "GET" | "POST" | "PATCH" | "DELETE" | "OPTIONS";
+  body: string;
+}
+</code></pre>
+
+  <h3>Type: httpResponse</h3>
+  <pre><code>export type httpResponse = {
+  status: number;
+  body: string;
+  header: Record&lt;string, string&gt;;
+}
+</code></pre>
+
 </body>
 </html>
 
