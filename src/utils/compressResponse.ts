@@ -23,6 +23,7 @@ export default async function compressResponse(response: string | Buffer, compre
         await pipeline(readableStream, createDeflate(), writeableStream);
         break;
       case "gzip":
+        console.log("gzip chosen")
         chosenEncoding = "gzip";
         await pipeline(readableStream, createGzip(), writeableStream);
         break;
@@ -37,6 +38,7 @@ export default async function compressResponse(response: string | Buffer, compre
     }
     if (chosenEncoding) break;
   }
+  console.log(Buffer.byteLength(Buffer.concat(buffers)));
   return [Buffer.concat(buffers), chosenEncoding];
 }
 

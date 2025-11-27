@@ -28,11 +28,13 @@ export default class HttpServer {
         let req = incomingRequest(data);
         //obtain server response by executing http server callbacks
         const res = await reqListener(req);
-        const encodings = req.headers.get("Accept-Encoding") as string[];
-        const [compressedResponse, chosenEncoding] = await compressResponse(res.body, encodings);
-        if (chosenEncoding != null) {
-          res.body = compressedResponse;
-          res.headers.set("Content-Encoding", chosenEncoding);
+        const encodings = req.headers.get("Accept-Encoding") as string[] | undefined;
+        if (encodings) {
+          const [compressedResponse, chosenEncoding] = await compressResponse(res.body, encodings);
+          if (chosenEncoding) {
+            res.body = compressedResponse;
+            res.headers.set("Content-Encoding", chosenEncoding);
+          }
         }
         res.headers.set("Content-Length", Buffer.byteLength((res.body)));
         res.headers.set("Keep-Alive", `timeout=${this.timeout}, max=${requestQuota}`);

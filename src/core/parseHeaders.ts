@@ -11,7 +11,7 @@ export default function parseHeaders(headerList: string[]): Map<string, string |
     headerStore.set(key, value);
   });
   if (!headerStore.has("Accept-Encoding")) {
-    headerStore.set("Accept-Encoding", "");
+    return headerStore;
   }
 
   let encodingTypes = headerStore.get("Accept-Encoding");
