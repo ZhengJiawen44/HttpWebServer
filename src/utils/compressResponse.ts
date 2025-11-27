@@ -2,7 +2,9 @@ import { Writable, Readable } from "stream";
 import { createGzip, createDeflate, createBrotliCompress, createZstdCompress } from "zlib";
 import { pipeline } from "stream/promises";
 
-export async function compressResponse(response: string | Buffer, compressionEncodings: string[]): Promise<[Buffer, string]> {
+export default async function compressResponse(response: string | Buffer, compressionEncodings: string[]): Promise<[Buffer, string]> {
+
+  if (compressionEncodings == null) return [null, null];
 
   let chosenEncoding = null;
   let buffers = [];

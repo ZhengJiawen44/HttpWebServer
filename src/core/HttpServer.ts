@@ -1,7 +1,7 @@
 import net from "net";
 import incomingRequest from "./incomingRequest.ts";
 import debounce from "../utils/debounce.ts";
-import { compressResponse } from "../utils/compressResponse.ts";
+import compressResponse from "../utils/compressResponse.ts";
 
 export default class HttpServer {
   TCPServer: net.Server;
