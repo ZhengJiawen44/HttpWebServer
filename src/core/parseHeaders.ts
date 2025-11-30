@@ -13,20 +13,24 @@ export default function parseHeaders(headerList: string[]): Map<string, string |
   if (!headerStore.has("Accept-Encoding")) {
     return headerStore;
   }
-
-  let encodingTypes = headerStore.get("Accept-Encoding");
-  if (typeof encodingTypes == "string") {
-    headerStore.set("Accept-Encoding", parseEncodingTypes(encodingTypes));
-  }
+  parseAcceptEncoding(headerStore);
   return headerStore;
 }
 
+function parseAcceptEncoding(headerStore: Map<string, string | string[]>) {
+  const encodingTypes = headerStore.get("Accept-Encoding");
+  if (encodingTypes && typeof encodingTypes == "string") {
+    headerStore.set("Accept-Encoding", parseEncodingTypes(encodingTypes));
+  }
+}
 
-/*
- * Parse Accept-Encoding into an array of encodings
- */
 export function parseEncodingTypes(unparsedEncodingTypes: string): string[] {
   const encodings = unparsedEncodingTypes.replace(/\s+/g, "").split(",");
-  return encodings
+  encodings.sort((a, b) => {
+    const weightA = a.split(";")[1]?.split("=")[1] ?? 1.0;
+    const weightB = b.split(";")[1]?.split("=")[1] ?? 1.0;
+    return +weightB - +weightA;
+  })
+  return encodings.map((e) => e.split(";")[0].toLowerCase());
 }
 
