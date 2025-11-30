@@ -17,7 +17,7 @@ export default async function compressResponse(response: string | Buffer, compre
   });
 
   for (let encoding of compressionEncodings) {
-    switch (encoding) {
+    switch (encoding.toLowerCase()) {
       case "deflate":
         chosenEncoding = "deflate"
         await pipeline(readableStream, createDeflate(), writeableStream);

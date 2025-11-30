@@ -26,6 +26,7 @@ export default class HttpServer {
         requestQuota--;
 
         let req = incomingRequest(data);
+
         //obtain server response by executing http server callbacks
         const res = await reqListener(req);
         const encodings = req.headers.get("Accept-Encoding") as string[] | undefined;

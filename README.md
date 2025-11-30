@@ -3,7 +3,9 @@
 A naive implementation of an http web server written on top of node's ```net``` module.
 
 ## Features
+- Compression negotition with client. ([more](#4-function-parseheaders))
 - HTTP/HTTPS support
+- fast, simple and intuitive access to headers
 - Easy configuration
 - Fast and minimal
 
@@ -68,7 +70,7 @@ server.listen(port, host, ()=>{
 ```
 
 ### 2. Function: createServer (Deprecated)
-this function is deprecated in favour of creating servers using ```new Server()``` instead
+this function is deprecated in favour of creating servers using ```new Server()``` instead. No factory method was required for this fck-ass web server.
 #### createServer(cb):
 - ```cb``` ```(req)=>serverResponse``` same as the callabck in  [Server class](#1-class-server) above. constructor for the Server Object that manages incoming server requests and responses.
 - returns ```server``` object. 
@@ -100,7 +102,7 @@ import incomingRequest from "./incomingRequest.ts"
 utility function to construct a header object from an array of string key value pairs. Used by ```incomingRequest``` to parse headers.
 #### parseHeaders(headerList)
 - headerList ```string[]``` an array of strings containing header key and value pairs.
-- returns ```headerStore``` a map containing all headers stored in key value pairs. The ```Accept-Encoding``` header is automatically parsed into an array of encoding types.
+- returns ```headerStore``` a map containing all headers stored in key value pairs. The ```Accept-Encoding``` , ```Accept```,  ```Accept-Language``` headers are automatically parsed and sorted acording to their weights into an array of types.
 ```js
 	import parseHeader from "./parseHeader.ts";
 	const headers = parseHeader(["Content-Type:text/html", "Content-Length:11"]);

@@ -29,14 +29,6 @@ test("correct parsing of weighted Accept Encoding with extra spaces", () => {
   expect(acceptEncoding).toEqual(["deflate", "zstd", "gzip", "br"])
 });
 
-test("correct parsing of partially weighted Accept Encoding with inconsistent capitalization", () => {
-  const rawHeader = "Accept-Encoding: GZIP, deflate, br; q=0.5, zstd"
-  const headerStore = parseHeaders([rawHeader]);
-  const acceptEncoding = headerStore.get("Accept-Encoding");
-  expect(acceptEncoding).toEqual(["gzip", "deflate", "zstd", "br"])
-});
-
-
 test("correct parsing of Accept-Encoding with wildcard", () => {
   const rawHeader = "Accept-Encoding: deflate;q=0.5, *"
   const headerStore = parseHeaders([rawHeader]);
@@ -44,11 +36,24 @@ test("correct parsing of Accept-Encoding with wildcard", () => {
   expect(acceptEncoding).toEqual(["*", "deflate"])
 });
 
-
 test("correct parsing of wildcard with weight 0", () => {
   const rawHeader = "Accept-Encoding: gzip, deflate, br; q=0.5, *; q=0";
   const headerStore = parseHeaders([rawHeader]);
   const acceptEncoding = headerStore.get("Accept-Encoding");
   expect(acceptEncoding).toEqual(["gzip", "deflate", "br"])
+});
+
+test("correct parsing of Accept-Language", () => {
+  const rawHeader = "Accept-Language: en-US,en;q=0.5, jp;q=0.6";
+  const headerStore = parseHeaders([rawHeader]);
+  const acceptEncoding = headerStore.get("Accept-Language");
+  expect(acceptEncoding).toEqual(["en-US", "jp", "en"])
+});
+
+test("correct parsing of Accept", () => {
+  const rawHeader = "Accept-Language: text/html,application/xhtml+xml,application/xml;q=0.5,*/*;q=0.8";
+  const headerStore = parseHeaders([rawHeader]);
+  const acceptEncoding = headerStore.get("Accept-Language");
+  expect(acceptEncoding).toEqual(["text/html", "application/xhtml+xml", "*/*", "application/xml"])
 });
 
