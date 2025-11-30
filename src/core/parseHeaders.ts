@@ -26,11 +26,20 @@ function parseAcceptEncoding(headerStore: Map<string, string | string[]>) {
 
 export function parseEncodingTypes(unparsedEncodingTypes: string): string[] {
   const encodings = unparsedEncodingTypes.replace(/\s+/g, "").split(",");
-  encodings.sort((a, b) => {
-    const weightA = a.split(";")[1]?.split("=")[1] ?? 1.0;
-    const weightB = b.split(";")[1]?.split("=")[1] ?? 1.0;
-    return +weightB - +weightA;
+
+  const encodingsWithWeight: [string, number][] = encodings.map((e) => {
+    const weight = e.split(";")[1]?.split("=")[1] ?? 1.0;
+    const encoding = e.split(";")[0];
+    return [encoding, +weight] as [string, number];
+  }).sort((a, b) => {
+    return b[1] - a[1];
+  });
+
+  const sortedEncodings = encodingsWithWeight.map(([encoding, weight]) => {
+    if (weight != 0) return encoding.toLowerCase();
   })
-  return encodings.map((e) => e.split(";")[0].toLowerCase());
+
+
+  return sortedEncodings;
 }
 

@@ -34,6 +34,10 @@ export default async function compressResponse(response: string | Buffer, compre
         chosenEncoding = "zstd";
         await pipeline(readableStream, createZstdCompress(), writeableStream);
         break;
+      case "*":
+        chosenEncoding = "gzip";
+        await pipeline(readableStream, createGzip(), writeableStream);
+        break;
     }
     if (chosenEncoding) break;
   }
