@@ -9,7 +9,13 @@ const server = new HttpServer(
     if (req.url == "/") {
       try {
         const body = await fs.readFile("./public/index.html", { encoding: "utf8" });
-        return new Response(body, { status: 200, headers: { "Content-Type": "text/html" } });
+        const res = new Response(body, { status: 200, headers: { "Content-Type": "text/html" } });
+        res.cookie.setCookie("a", "b", { httpOnly: true, sameSite: "lax" });
+        const today = new Date();
+        const tomorrow = new Date(today); // copy today
+        tomorrow.setDate(today.getDate() + 1);
+        res.cookie.setCookie("z", "a", { expires: tomorrow })
+        return res;
       } catch (error) {
         return new Response(error.message, { status: 500, headers: { "Content-Type": "text/html" } });
       }
@@ -23,7 +29,6 @@ const server = new HttpServer(
       }
     }
     else if (req.url.startsWith("/files") && req.method == "POST") {
-      console.log(req.body);
       return new Response("data recieved", { status: 404 });
     }
     else {

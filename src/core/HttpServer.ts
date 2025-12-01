@@ -9,7 +9,6 @@ export default class HttpServer {
   requestQuota: number;
   schemes: string[];
   constructor(reqListener: Function, options?: { timeout?: number, requestQuota?: number }) {
-    this.schemes = ["gzip"];
     this.timeout = options?.timeout || 5000;
     this.requestQuota = options?.requestQuota || 5;
     //create the TCP server
