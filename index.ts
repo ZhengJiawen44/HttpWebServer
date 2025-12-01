@@ -10,11 +10,7 @@ const server = new HttpServer(
       try {
         const body = await fs.readFile("./public/index.html", { encoding: "utf8" });
         const res = new Response(body, { status: 200, headers: { "Content-Type": "text/html" } });
-        res.cookie.setCookie("a", "b", { httpOnly: true, sameSite: "lax" });
-        const today = new Date();
-        const tomorrow = new Date(today); // copy today
-        tomorrow.setDate(today.getDate() + 1);
-        res.cookie.setCookie("z", "a", { expires: tomorrow })
+        res.cookie.set("a", "b", { httpOnly: true, sameSite: "lax" });
         return res;
       } catch (error) {
         return new Response(error.message, { status: 500, headers: { "Content-Type": "text/html" } });

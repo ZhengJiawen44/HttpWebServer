@@ -10,7 +10,7 @@ type options = {
   partitioned?: boolean;
 }
 
-class CookieObject {
+export class CookieObject {
   name: string;
   value: string;
   options?: options;
@@ -22,18 +22,24 @@ class CookieObject {
 }
 
 export default class Cookie {
-  cookieStore: CookieObject[];
-  constructor() {
-    this.cookieStore = [];
+  cookieStore: Map<string, CookieObject>;
+  constructor(cookieStore?: Map<string, CookieObject>) {
+    this.cookieStore = cookieStore || new Map();
   }
-  setCookie(name: string, value: string, options?: options) {
+  set(name: string, value: string, options?: options) {
     const cookieObj = new CookieObject(name, value, options);
-    this.cookieStore.push(cookieObj);
+    this.cookieStore.set(name, cookieObj);
+  }
+  get(name: string) {
+    return this.cookieStore.get(name).value;
+  }
+  has(name: string) {
+    return this.cookieStore.has(name);
   }
   toHeaderString(): string {
     let cookieHeader = "";
-    for (let cookie of this.cookieStore) {
-      cookieHeader += `Set-Cookie: ${cookie.name}=${cookie.value}${parseParameterString(cookie.options)}\r\n`;
+    for (let [name, cookieObj] of this.cookieStore.entries()) {
+      cookieHeader += `Set-Cookie: ${name}=${cookieObj.value}${parseParameterString(cookieObj.options)}\r\n`;
     }
     return cookieHeader;
   }
